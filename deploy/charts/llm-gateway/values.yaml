@@ -1,0 +1,44 @@
+replicaCount: 2
+
+image:
+  repository: llm-gateway
+  pullPolicy: IfNotPresent
+  tag: "local"
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+config:
+  PORT: "8080"
+  UPSTREAM_BASE_URL: "http://ollama-service.default.svc.cluster.local:11434"
+  OPENAI_BASE_URL: "https://api.openai.com"
+  ANTHROPIC_BASE_URL: "https://api.anthropic.com"
+  GEMINI_BASE_URL: "https://generativelanguage.googleapis.com"
+  QDRANT_HOST: "qdrant-service.default.svc.cluster.local"
+  QDRANT_PORT: "6334"
+  REDIS_HOST: "redis-service.default.svc.cluster.local"
+  REDIS_PORT: "6379"
+  RATE_LIMIT_MAX_REQUESTS: "120"
+  RATE_LIMIT_WINDOW: "1m"
+  RATE_LIMIT_FAIL_OPEN: "true"
+  CACHE_ENABLED: "true"
+  CACHE_FAIL_OPEN: "true"
+  CACHE_CLEANUP_ENABLED: "true"
+  STRICT_SEMANTIC_CACHE_MATCH: "true"
+  REQUIRE_EXACT_REQUEST_DIGEST: "true"
+  TELEMETRY_EXPORTER: "stdout"
+
+secrets:
+  create: true
+  openaiApiKey: ""
+  anthropicApiKey: ""
+  geminiApiKey: ""
